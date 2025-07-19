@@ -7,7 +7,7 @@ namespace MedProSmile.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize (Roles ="User")]
+    [Authorize (Roles ="Admin")]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _service;
@@ -21,7 +21,7 @@ namespace MedProSmile.Controllers
         public async Task<IActionResult> GetAllPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _service.GetAllPagedAsync(pageNumber, pageSize);
-            return Ok(result);
+            return Ok(result); 
         }
 
         [HttpGet("getById")]
