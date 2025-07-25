@@ -19,7 +19,7 @@ namespace MedProSmile.Repository
 
         }
 
-        public async Task<PagedResult<Employee>> GetAllPagedAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
         {
             try
             {
@@ -33,9 +33,9 @@ namespace MedProSmile.Repository
                 using var multi = await connection.QueryMultipleAsync(query, parameters, commandType: CommandType.StoredProcedure);
 
                 var totalCount = await multi.ReadFirstAsync<int>();
-                var employees = (await multi.ReadAsync<Employee>()).ToList();
+                var employees = (await multi.ReadAsync<dynamic>()).ToList();
 
-                return new PagedResult<Employee>
+                return new PagedResult<dynamic>
                 {
                     Items = employees,
                     TotalCount = totalCount
@@ -48,14 +48,14 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<Employee> GetByIdAsync(int id)
+        public async Task<dynamic> GetByIdAsync(int id)
         {
             try
             {
                 var query = "usp_GetEmployeeById";
                 var parameters = new { EmployeeId = id };
                 using var connection = _context.CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Employee>(query, parameters, commandType: CommandType.StoredProcedure);
+                return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             }
             catch (Exception ex)
             {
