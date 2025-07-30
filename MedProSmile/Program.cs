@@ -22,6 +22,12 @@ builder.Services.AddSingleton<DapperContext>();
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IMasterRepository, MasterRepository>();
+builder.Services.AddScoped<IMasterService, MasterService>();
 //
 
 //JWT Token settings
