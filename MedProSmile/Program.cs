@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text;
 using MedProSmile.Data;
 using MedProSmile.Repository;
@@ -37,6 +38,17 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+
+builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
+builder.Services.AddScoped<IAppointmentsService, AppointmentsService>();
+
+builder.Services.AddScoped<IMedicalRecordsRepository, MedicalRecordsRepository>();
+builder.Services.AddScoped<IMedicalRecordsService, MedicalRecordsService>();
+
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+
+
 
 //
 
