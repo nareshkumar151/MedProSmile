@@ -1,6 +1,7 @@
 using System.Data;
 using System.Text;
 using MedProSmile.Data;
+using MedProSmile.Models;
 using MedProSmile.Repository;
 using MedProSmile.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,6 +48,13 @@ builder.Services.AddScoped<IMedicalRecordsService, MedicalRecordsService>();
 
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IRolesService, RolesService>();
+
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersService, UsersService>();
+
+builder.Services.AddScoped<IRoomAllocationRepository, RoomAllocationRepository>();
+builder.Services.AddScoped<IRoomAllocationService, RoomAllocationService>();
+
 
 
 
