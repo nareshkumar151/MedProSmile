@@ -55,6 +55,8 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IRoomAllocationRepository, RoomAllocationRepository>();
 builder.Services.AddScoped<IRoomAllocationService, RoomAllocationService>();
 
+builder.Services.AddScoped<IPatientMedicinesRepository, PatientMedicinesRepository>();
+builder.Services.AddScoped<IPatientMedicinesService, PatientMedicinesService>();
 
 
 
