@@ -58,7 +58,14 @@ builder.Services.AddScoped<IRoomAllocationService, RoomAllocationService>();
 builder.Services.AddScoped<IPatientMedicinesRepository, PatientMedicinesRepository>();
 builder.Services.AddScoped<IPatientMedicinesService, PatientMedicinesService>();
 
+builder.Services.AddScoped<IBillingMasterRepository, BillingMasterRepository>();
+builder.Services.AddScoped<IBillingMasterService, BillingMasterService>();
 
+builder.Services.AddScoped<IBillingDetailsRepository, BillingDetailsRepository>();
+builder.Services.AddScoped<IBillingDetailsService, BillingDetailsService>();
+
+builder.Services.AddScoped<IDischargeSummaryRepository, DischargeSummaryRepository>();
+builder.Services.AddScoped<IDischargeSummaryService, DischargeSummaryService>();
 
 //
 

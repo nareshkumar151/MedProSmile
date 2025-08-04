@@ -58,7 +58,7 @@ namespace MedProSmile.Repository
             try
             {
                 var query = "usp_GetPatientMedicineById";
-                var parameters = new { AppointmentId = id };
+                var parameters = new { MedicineId = id };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             }

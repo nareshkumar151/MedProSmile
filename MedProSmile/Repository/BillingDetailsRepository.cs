@@ -6,18 +6,17 @@ using System.Data;
 using System.Net;
 using System.Numerics;
 using System.Reflection;
-using System.Security.Cryptography;
 
 namespace MedProSmile.Repository
 {
-    public class RoomAllocationRepository : IRoomAllocationRepository
+    public class BillingDetailsRepository : IBillingDetailsRepository
     {
         private readonly DapperContext _context;
         private readonly IExceptionLogger _exceptionLogger;
-        private readonly string _controllerName = "RoomAllocation";
+        private readonly string _controllerName = "BillingDetails";
 
 
-        public RoomAllocationRepository(DapperContext context, IExceptionLogger exceptionLogger)
+        public BillingDetailsRepository(DapperContext context, IExceptionLogger exceptionLogger)
         {
             _context = context;
             _exceptionLogger = exceptionLogger;
@@ -28,7 +27,7 @@ namespace MedProSmile.Repository
         {
             try
             {
-                var query = "usp_GetAllRoomAllocations";
+                var query = "usp_GetAllBillingDetails";
                 var parameters = new DynamicParameters();
                 parameters.Add("PageNumber", pageNumber);
                 parameters.Add("PageSize", pageSize);
@@ -57,8 +56,8 @@ namespace MedProSmile.Repository
         {
             try
             {
-                var query = "usp_GetRoomAllocationById";
-                var parameters = new { RoomId = id };
+                var query = "usp_GetBillingDetailById";
+                var parameters = new { BillingDetailId = id };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             }
@@ -69,21 +68,18 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<int> CreateAsync(RoomAllocation roomAllocation)
+        public async Task<int> CreateAsync(BillingDetails billingDetails)
         {
             try
             {
-                var query = "usp_CreateRoomAllocation";
+                var query = "usp_CreateBillingDetail";
                 var parameters = new {
-                    roomAllocation.HospitalId,
-                    roomAllocation.PatientId,
-                    roomAllocation.DepartmentId,
-                    roomAllocation.RoomNumber,
-                    roomAllocation.BedNumber,
-                    roomAllocation.AdmissionDate,
-                    roomAllocation.DischargeDate,
-                    roomAllocation.Status,
-                    roomAllocation.CreatedBy
+                    billingDetails.HospitalId,
+                    billingDetails.BillingId,
+                    billingDetails.ItemDescription,
+                    billingDetails.Quantity,
+                    billingDetails.UnitPrice,
+                    billingDetails.CreatedBy
                 };
                 using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
@@ -95,22 +91,19 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<int> UpdateAsync(RoomAllocationUpdate roomAllocation)
+        public async Task<int> UpdateAsync(BillingDetailsUpdate billingDetailsUpdate)
         {
             try
             {
-                var query = "usp_UpdateRoomAllocation";
+                var query = "usp_UpdateBillingDetail";
                 var parameters = new {
-                    roomAllocation.RoomId,
-                    roomAllocation.HospitalId,
-                    roomAllocation.PatientId ,
-                    roomAllocation.DepartmentId ,
-                    roomAllocation.RoomNumber ,
-                    roomAllocation.BedNumber  ,
-                    roomAllocation.AdmissionDate ,
-                    roomAllocation.DischargeDate ,
-                    roomAllocation.Status ,
-                    roomAllocation.UpdatedBy
+                    billingDetailsUpdate.BillingDetailId,
+                    billingDetailsUpdate.HospitalId,
+                    billingDetailsUpdate.BillingId,
+                    billingDetailsUpdate.ItemDescription,
+                    billingDetailsUpdate.Quantity,
+                    billingDetailsUpdate.UnitPrice,
+                    billingDetailsUpdate.UpdatedBy
 
                 };
                 using var connection = _context.CreateConnection();
@@ -123,12 +116,12 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<int> DeleteAsync(RoomAllocationDelete roomAllocationDelete)
+        public async Task<int> DeleteAsync(BillingDetailsDelete billingDetailsDelete)
         {
             try
             {
-                var query = "usp_DeleteRoomAllocation";
-                var parameters = new { RoomId = roomAllocationDelete.RoomId, UpdatedBy = roomAllocationDelete.UpdatedBy};
+                var query = "usp_DeleteBillingDetail";
+                var parameters = new { BillingDetailId = billingDetailsDelete.BillingDetailId, UpdatedBy = billingDetailsDelete.UpdatedBy};
                 using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
             }
