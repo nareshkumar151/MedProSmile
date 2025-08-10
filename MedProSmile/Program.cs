@@ -67,6 +67,10 @@ builder.Services.AddScoped<IBillingDetailsService, BillingDetailsService>();
 builder.Services.AddScoped<IDischargeSummaryRepository, DischargeSummaryRepository>();
 builder.Services.AddScoped<IDischargeSummaryService, DischargeSummaryService>();
 
+builder.Services.AddScoped<IDischargeBillingRepository, DischargeBillingRepository>();
+builder.Services.AddScoped<IDischargeBillingService, DischargeBillingService>();
+
+
 //
 
 //JWT Token settings
