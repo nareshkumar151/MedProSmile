@@ -70,6 +70,8 @@ builder.Services.AddScoped<IDischargeSummaryService, DischargeSummaryService>();
 builder.Services.AddScoped<IDischargeBillingRepository, DischargeBillingRepository>();
 builder.Services.AddScoped<IDischargeBillingService, DischargeBillingService>();
 
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IStaffService, StaffService>();
 
 //
 
