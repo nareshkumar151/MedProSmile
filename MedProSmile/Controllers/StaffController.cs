@@ -38,7 +38,7 @@ namespace MedProSmile.Controllers
             return Ok("Succefully Created !!");
         }
 
-        [HttpPut("update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update(int id, StaffUpdate staffUpdate)
         {
             if (id != staffUpdate.StaffId) return BadRequest();
@@ -46,7 +46,7 @@ namespace MedProSmile.Controllers
             return Ok("Succefully updated record !!");
         }
 
-        [HttpDelete("delete")]
+        [HttpPost("delete")]
         public async Task<IActionResult> Delete(StaffDelete staffDelete)
         {
             await _service.DeleteAsync(staffDelete);

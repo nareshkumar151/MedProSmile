@@ -50,7 +50,7 @@ namespace MedProSmile.Controllers
             return Ok("Succefully Created !!");
         }
 
-        [HttpPut("updateDepartment")]
+        [HttpPost("updateDepartment")]
         public async Task<IActionResult> Update(int id, Department dep)
         {
             if (id != dep.DepartmentId) return BadRequest();

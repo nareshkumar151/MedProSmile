@@ -34,7 +34,7 @@ namespace MedProSmile.Controllers
             return Ok(new { token });
         }
 
-        [HttpPut("forgotpassword")]
+        [HttpPost("forgotpassword")]
         public async Task<IActionResult> Update(string username,string newpassword)
         {
             if (username == null || newpassword==null || username=="" || newpassword=="") return BadRequest();
