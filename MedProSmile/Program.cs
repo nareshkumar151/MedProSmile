@@ -1,6 +1,8 @@
 using System.Data;
 using System.Text;
 using MedProSmile.Data;
+using MedProSmile.Extensions;
+using MedProSmile.Middleware;
 using MedProSmile.Models;
 using MedProSmile.Repository;
 using MedProSmile.Services;
@@ -72,6 +74,7 @@ builder.Services.AddScoped<IDischargeBillingService, DischargeBillingService>();
 
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IStaffService, StaffService>();
+builder.Services.AddSingleton<IExceptionLogger, ExceptionLoggerRepository>();
 
 //
 
@@ -150,7 +153,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseExceptionLogging();
 
 
 app.MapControllers();

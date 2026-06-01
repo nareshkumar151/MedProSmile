@@ -54,18 +54,12 @@ namespace MedProSmile.Repository
 
         public async Task<dynamic> GetByIdAsync(int id)
         {
-            try
-            {
+           
                 var query = "usp_GetStaffById";
                 var parameters = new { AppointmentId = id };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception ex)
-            {
-                await _exceptionLogger.LogExceptionAsync(ex, nameof(GetByIdAsync) + " " + _controllerName);
-                throw;
-            }
+            
         }
 
         public async Task<int> CreateAsync(Staff staff)
