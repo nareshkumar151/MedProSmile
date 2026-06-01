@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using System.Text;
 using MedProSmile.Data;
 using MedProSmile.Extensions;
@@ -135,12 +135,21 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 //End JWT
 
 
 var app = builder.Build();
+app.UseCors("AllowAll"); // ✅ MUST be before UseAuthorization
 
 
 // Configure the HTTP request pipeline.
