@@ -32,9 +32,9 @@ namespace MedProSmile.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(Doctor emp)
+        public async Task<IActionResult> Create(Doctor doc)
         {
-            await _service.CreateAsync(emp);
+            await _service.CreateAsync(doc);
             return Ok("Succefully Created !!");
         }
 

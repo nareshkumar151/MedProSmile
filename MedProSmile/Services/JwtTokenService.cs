@@ -14,7 +14,7 @@ namespace MedProSmile.Services
         {
             _configuration = configuration;
         }
-
+        
         public string GenerateToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");

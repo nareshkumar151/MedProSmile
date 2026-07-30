@@ -56,7 +56,7 @@ namespace MedProSmile.Repository
         {
            
                 var query = "usp_GetStaffById";
-                var parameters = new { AppointmentId = id };
+                var parameters = new { StaffId = id };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             
@@ -123,7 +123,7 @@ namespace MedProSmile.Repository
             try
             {
                 var query = "usp_DeleteStaff";
-                var parameters = new { AppointmentId = staffDelete.StaffId, UpdatedBy = staffDelete.UpdatedBy};
+                var parameters = new { StaffId = staffDelete.StaffId, UpdatedBy = staffDelete.UpdatedBy};
                 using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
             }

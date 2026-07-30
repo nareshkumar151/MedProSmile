@@ -2,7 +2,7 @@
 {
     public class Doctor
     {
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         public int HospitalId { get; set; }
 

@@ -101,6 +101,7 @@ namespace MedProSmile.Repository
             {
                 var query = "usp_UpdatePatient";
                 var parameters = new {
+                    patientUpdateDto.PatientId,
                     patientUpdateDto.HospitalId,
                     patientUpdateDto.FullName ,
                     patientUpdateDto.DOB ,
@@ -127,7 +128,7 @@ namespace MedProSmile.Repository
         {
             try
             {
-                var query = "usp_DeleteEmployee";
+                var query = "usp_DeletePatient";
                 var parameters = new { PatientId = patientDeleteDto.PatientId, UpdatedBy = patientDeleteDto.UpdatedBy};
                 using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
