@@ -7,7 +7,7 @@ namespace MedProSmile.Services
     {
         private readonly IAppointmentsRepository _repository;
 
-        public AppointmentsService(IAppointmentsRepository repository)
+        public AppointmentsService(IAppointmentsRepository repository) 
         {
             _repository = repository;
         }
@@ -26,5 +26,8 @@ namespace MedProSmile.Services
 
         public Task<int> DeleteAsync(AppointmentDelete appointmentDelete)
             => _repository.DeleteAsync(appointmentDelete);
+        public Task<PagedResult<dynamic>> GetAllAppointmentByDoctorId(int doctorId, int pageNumber, int pageSize)
+        => _repository.GetAllAppointmentByDoctorId(doctorId,pageNumber, pageSize);
+
     }
 }

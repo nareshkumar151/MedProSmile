@@ -77,9 +77,9 @@ namespace MedProSmile.Repository
                 var parameters = new {
                     users.HospitalId,
                     users.Username,
-                    users.PasswordHash,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(users.PasswordHash),
                     users.RoleId,
-                    users.Status,                        
+                    users.Status,
                     users.CreatedBy
                 };
                 using var connection = _context.CreateConnection();
@@ -97,17 +97,30 @@ namespace MedProSmile.Repository
             try
             {
                 var query = "usp_UpdateUser";
+                using var connection = _context.CreateConnection();
+
+                var passwordHash = usersUpdate.PasswordHash;
+                if (string.IsNullOrWhiteSpace(passwordHash))
+                {
+                    passwordHash = await connection.QueryFirstOrDefaultAsync<string>(
+                        "SELECT PasswordHash FROM Users WHERE UserId = @UserId",
+                        new { usersUpdate.UserId });
+                }
+                else
+                {
+                    passwordHash = BCrypt.Net.BCrypt.HashPassword(passwordHash);
+                }
+
                 var parameters = new {
                     usersUpdate.UserId,
                     usersUpdate.HospitalId,
                     usersUpdate.Username ,
-                    usersUpdate.PasswordHash,
+                    PasswordHash = passwordHash,
                     usersUpdate.RoleId,
-                    usersUpdate.Status ,
+                    usersUpdate.Status,
                     usersUpdate.UpdatedBy
 
                 };
-                using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
             }
             catch (Exception ex)

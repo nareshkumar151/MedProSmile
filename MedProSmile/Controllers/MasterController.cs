@@ -7,7 +7,7 @@ namespace MedProSmile.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize (Roles ="Admin")]
+    [Authorize]
     public class MasterController : ControllerBase
     {
         private readonly IMasterService _service;

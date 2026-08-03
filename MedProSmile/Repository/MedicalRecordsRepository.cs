@@ -23,12 +23,13 @@ namespace MedProSmile.Repository
 
         }
 
-        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int? doctorId, int pageNumber, int pageSize)
         {
             try
             {
                 var query = "usp_GetAllMedicalRecords";
                 var parameters = new DynamicParameters();
+                parameters.Add("DoctorId", doctorId);
                 parameters.Add("PageNumber", pageNumber);
                 parameters.Add("PageSize", pageSize);
 
@@ -75,6 +76,7 @@ namespace MedProSmile.Repository
                 var query = "usp_CreateMedicalRecord";
                 var parameters = new {
                     medicalRecords.HospitalId,
+                    medicalRecords.DoctorId,
                     medicalRecords.PatientId,
                     medicalRecords.DepartmentId,
                     medicalRecords.Diagnosis,

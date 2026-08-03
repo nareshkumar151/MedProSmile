@@ -1,5 +1,6 @@
 ﻿using MedProSmile.Models;
 using MedProSmile.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MedProSmile.Services
 {
@@ -12,8 +13,8 @@ namespace MedProSmile.Services
             _repository = repository;
         }
 
-        public Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
-            => _repository.GetAllPagedAsync(pageNumber, pageSize);
+        public Task<PagedResult<dynamic>> GetAllPagedAsync( int? doctorId,int pageNumber, int pageSize)
+            => _repository.GetAllPagedAsync(doctorId,pageNumber, pageSize);
 
         public Task<dynamic> GetByIdAsync(int id)
             => _repository.GetByIdAsync(id);

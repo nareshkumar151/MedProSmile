@@ -2,6 +2,7 @@
 using MedProSmile.Data;
 using MedProSmile.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 using System.Numerics;
@@ -24,12 +25,13 @@ namespace MedProSmile.Repository
 
         }
 
-        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<dynamic>> GetAllPagedAsync( int? doctorId,int pageNumber, int pageSize)
         {
             try
             {
                 var query = "usp_GetAllPatientMedicines";
                 var parameters = new DynamicParameters();
+                parameters.Add("DoctorId", doctorId);
                 parameters.Add("PageNumber", pageNumber);
                 parameters.Add("PageSize", pageSize);
 
@@ -127,7 +129,7 @@ namespace MedProSmile.Repository
         {
             try
             {
-                var query = "usp_DeleteAppointment";
+                var query = "usp_DeletePatientMedicine";
                 var parameters = new { MedicineId = patientMedicineDelete.MedicineId, UpdatedBy = patientMedicineDelete.UpdatedBy};
                 using var connection = _context.CreateConnection();
                 return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);

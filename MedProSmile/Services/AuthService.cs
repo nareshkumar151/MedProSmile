@@ -16,8 +16,17 @@ namespace MedProSmile.Services
 
         
 
-        public User GetUserDetails(string username, string password)
-           => _repository.GetUserDetails(username, password);
+        public User? GetUserDetails(string username, string password)
+        {
+            var user = _repository.GetUserDetails(username);
+            if (user == null || string.IsNullOrEmpty(user.PasswordHash))
+                return null;
+
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                return null;
+
+            return user;
+        }
 
         public Task<int> ForgotPassword(string username, string newpassword)
           => _repository.ForgotPassword(username, newpassword);

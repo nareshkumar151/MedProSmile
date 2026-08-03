@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace MedProSmile.Controllers
 {
     [Route("api/[controller]")]
+
     [ApiController]
-    [Authorize (Roles ="Admin")]
+    [Authorize (Roles ="Admin,Doctor")]
     public class MedicalRecordsController : ControllerBase
     {
         private readonly IMedicalRecordsService _service;
@@ -18,9 +19,9 @@ namespace MedProSmile.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<IActionResult> GetAllPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetAllPaged([FromQuery] int doctorId,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _service.GetAllPagedAsync(pageNumber, pageSize);
+            var result = await _service.GetAllPagedAsync(doctorId,pageNumber, pageSize);
             return Ok(result); 
         }
 

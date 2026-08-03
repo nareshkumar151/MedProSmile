@@ -9,5 +9,9 @@ namespace MedProSmile.Services
         Task<int> CreateAsync(Appointment appointment);
         Task<int> UpdateAsync(AppointmentUpdate appointmentUpdate);
         Task<int> DeleteAsync(AppointmentDelete appointmentDelete);
+
+        Task<PagedResult<dynamic>> GetAllAppointmentByDoctorId(int doctorId,int pageNumber, int pageSize);
+
+        
     }
 }

@@ -39,11 +39,16 @@ namespace MedProSmile.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> Update(int id, UsersUpdate usersUpdate)
+        public async Task<IActionResult> Update(int id, [FromBody] UsersUpdate usersUpdate)
         {
-            if (id != usersUpdate.UserId) return BadRequest();
+            if (usersUpdate == null || id != usersUpdate.UserId)
+                return BadRequest("UserId is required.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             await _service.UpdateAsync(usersUpdate);
-            return Ok("Succefully updated record !!");
+            return Ok("Successfully updated record !!");
         }
 
         [HttpPost("delete")]

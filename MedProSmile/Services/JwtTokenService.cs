@@ -25,11 +25,19 @@ namespace MedProSmile.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("UserId", user.UserId.ToString()),
+                new Claim("HospitalId", user.HospitalId.ToString()),
+                new Claim("RoleId", user.RoleId.ToString())
             };
+
+            if (user.DoctorId.HasValue)
+            {
+                claims.Add(new Claim("DoctorId", user.DoctorId.Value.ToString()));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: issuer,

@@ -16,13 +16,43 @@ namespace MedProSmile.Repository
         private readonly string _controllerName = "Appointments";
 
 
-        public AppointmentsRepository(DapperContext context, IExceptionLogger exceptionLogger)
+        public AppointmentsRepository(DapperContext context, IExceptionLogger exceptionLogger) 
         {
             _context = context;
             _exceptionLogger = exceptionLogger;
 
         }
+        
 
+             public async Task<PagedResult<dynamic>> GetAllAppointmentByDoctorId(int doctorId,int pageNumber, int pageSize)
+        {
+            try
+            {
+                var query = "usp_GetAllAppointmentsByDoctorId";
+                var parameters = new DynamicParameters();
+                parameters.Add("DoctorId", doctorId);
+                parameters.Add("PageNumber", pageNumber);
+                parameters.Add("PageSize", pageSize);
+
+                using var connection = _context.CreateConnection();
+
+                using var multi = await connection.QueryMultipleAsync(query, parameters, commandType: CommandType.StoredProcedure);
+
+                var totalCount = await multi.ReadFirstAsync<int>();
+                var employees = (await multi.ReadAsync<dynamic>()).ToList();
+
+                return new PagedResult<dynamic>
+                {
+                    Items = employees,
+                    TotalCount = totalCount
+                };
+            }
+            catch (Exception ex)
+            {
+                await _exceptionLogger.LogExceptionAsync(ex, nameof(GetAllPagedAsync) + " " + _controllerName);
+                throw;
+            }
+        }
         public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
         {
             try

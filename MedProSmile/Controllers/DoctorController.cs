@@ -41,7 +41,6 @@ namespace MedProSmile.Controllers
         [HttpPost("update")]
         public async Task<IActionResult> Update(DoctorUpdateDto doctorUpdateDto)
         {
-            if (doctorUpdateDto.DoctorId != doctorUpdateDto.DoctorId) return BadRequest();
             await _service.UpdateAsync(doctorUpdateDto);
             return Ok("Succefully updated record !!");
         }

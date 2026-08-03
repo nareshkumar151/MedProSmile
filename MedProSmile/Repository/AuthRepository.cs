@@ -19,28 +19,12 @@ namespace MedProSmile.Repository
 
         }
 
-        public async Task<User> GetByIdAsync(string username, string password)
+        public User GetUserDetails(string username)
         {
             try
             {
                 var query = "usp_getUserDetails";
-                var parameters = new { UserName = username, Password = password };
-                using var connection = _context.CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<User>(query, parameters, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception ex)
-            {
-                await _exceptionLogger.LogExceptionAsync(ex, nameof(GetByIdAsync) + " " + _controllerName);
-                throw;
-            }
-        }
-
-        public User GetUserDetails(string username, string password)
-        {
-            try
-            {
-                var query = "usp_getUserDetails";
-                var parameters = new { UserName = username, Password = password };
+                var parameters = new { UserName = username };
                 using var connection = _context.CreateConnection();
                 return connection.QueryFirstOrDefault<User>(query, parameters, commandType: CommandType.StoredProcedure);
             }

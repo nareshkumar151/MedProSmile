@@ -4,7 +4,7 @@ namespace MedProSmile.Repository
 {
     public interface IAuthRepository
     {
-        User GetUserDetails(string username, string password);
+        User GetUserDetails(string username);
         Task<int> ForgotPassword(string username, string newpassword);
 
 

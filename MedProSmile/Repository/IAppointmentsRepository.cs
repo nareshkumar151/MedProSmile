@@ -7,7 +7,10 @@ namespace MedProSmile.Repository
         Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize);
         Task<dynamic> GetByIdAsync(int id);
         Task<int> CreateAsync(Appointment appointment);
-        Task<int> UpdateAsync(AppointmentUpdate appointmentUpdate);
+        Task<int> UpdateAsync(AppointmentUpdate appointmentUpdate); 
         Task<int> DeleteAsync(AppointmentDelete appointmentDelete);
+        Task<PagedResult<dynamic>> GetAllAppointmentByDoctorId(int doctorId,int pageNumber, int pageSize);
+
+        
     }
 }

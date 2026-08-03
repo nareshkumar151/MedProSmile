@@ -4,7 +4,7 @@ namespace MedProSmile.Services
 {
     public interface IAuthService
     {
-        User GetUserDetails(string username, string password);
+        User? GetUserDetails(string username, string password);
         Task<int> ForgotPassword(string username, string newpassword);
     }
 }
