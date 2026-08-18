@@ -81,6 +81,12 @@ builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddSingleton<IExceptionLogger, ExceptionLoggerRepository>();
 
+builder.Services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
+builder.Services.AddScoped<IConsultationTypeService, ConsultationTypeService>();
+
+builder.Services.AddScoped<IDoctorConsultantFeeRepository, DoctorConsultantFeeRepository>();
+builder.Services.AddScoped<IDoctorConsultantFeeService, DoctorConsultantFeeService>();
+
 //
 
 //JWT Token settings

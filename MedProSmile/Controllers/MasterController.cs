@@ -30,13 +30,15 @@ namespace MedProSmile.Controllers
             return emp == null ? NotFound() : Ok(emp);
         }
         [HttpGet("getAllDepartment")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _service.GetAllPagedAsync(pageNumber, pageSize);
-            return Ok(result); 
+            return Ok(result);
         }
 
         [HttpGet("getDepartmentById")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
             var emp = await _service.GetByIdAsync(id);
@@ -44,6 +46,7 @@ namespace MedProSmile.Controllers
         }
 
         [HttpPost("createDepartment")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Department dep)
         {
             await _service.CreateAsync(dep);
@@ -51,11 +54,20 @@ namespace MedProSmile.Controllers
         }
 
         [HttpPost("updateDepartment")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, Department dep)
         {
             if (id != dep.DepartmentId) return BadRequest();
             await _service.UpdateAsync(dep);
             return Ok("Succefully updated record !!");
+        }
+
+        [HttpPost("deleteDepartment")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            await _service.DeleteDepartmentAsync(id);
+            return Ok("Succefully deleted record !!");
         }
 
         [HttpGet("getAllStates")]

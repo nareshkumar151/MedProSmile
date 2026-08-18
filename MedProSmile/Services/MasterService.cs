@@ -30,6 +30,9 @@ namespace MedProSmile.Services
         public Task<int> UpdateAsync(Department dep)
             => _repository.UpdateAsync(dep);
 
+        public Task<int> DeleteDepartmentAsync(int id)
+            => _repository.DeleteDepartmentAsync(id);
+
         public Task<PagedResult<dynamic>> GetAllStates()
              => _repository.GetAllStates();
 

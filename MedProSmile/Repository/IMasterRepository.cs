@@ -10,6 +10,7 @@ namespace MedProSmile.Repository
         Task<dynamic> GetByIdAsync(int id);
         Task<int> CreateAsync(Department dep);
         Task<int> UpdateAsync(Department dep);
+        Task<int> DeleteDepartmentAsync(int id);
         Task<PagedResult<dynamic>> GetAllStates();
         Task<PagedResult<dynamic>> GetCitiesByStateId(int StateId);
 

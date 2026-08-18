@@ -140,6 +140,22 @@ namespace MedProSmile.Repository
             }
         }
 
+        public async Task<int> DeleteDepartmentAsync(int id)
+        {
+            try
+            {
+                var query = "usp_DeleteDepartment";
+                var parameters = new { DepartmentId = id };
+                using var connection = _context.CreateConnection();
+                return await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                await _exceptionLogger.LogExceptionAsync(ex, nameof(DeleteDepartmentAsync) + " " + _controllerName);
+                throw;
+            }
+        }
+
         public async Task<PagedResult<dynamic>> GetAllStates()
         {
             try
