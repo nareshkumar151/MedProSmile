@@ -3,6 +3,7 @@ namespace MedProSmile.Models
     public class DoctorConsultantFeeModel
     {
         public int ConsultantFeeId { get; set; }
+        public int HospitalId { get; set; }
         public int DoctorId { get; set; }
         public string? FullName { get; set; }
         public int ConsultationTypeId { get; set; }

@@ -53,12 +53,13 @@ namespace MedProSmile.Repository
                 throw;
             }
         }
-        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int hospitalId, int pageNumber, int pageSize)
         {
             try
             {
                 var query = "usp_GetAllAppointments";
                 var parameters = new DynamicParameters();
+                parameters.Add("HospitalId", hospitalId);
                 parameters.Add("PageNumber", pageNumber);
                 parameters.Add("PageSize", pageSize);
 
@@ -82,12 +83,12 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<dynamic> GetByIdAsync(int id)
+        public async Task<dynamic> GetByIdAsync(int id, int hospitalId)
         {
             try
             {
                 var query = "usp_GetAppointmentById";
-                var parameters = new { AppointmentId = id };
+                var parameters = new { AppointmentId = id, HospitalId = hospitalId };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             }
@@ -111,6 +112,8 @@ namespace MedProSmile.Repository
                     appointment.AppointmentTime,
                     appointment.Reason,
                     appointment.AppointmentStatus,
+                    appointment.ConsultationTypeId,
+                    appointment.ConsultationFee,
                     appointment.Status,
                     appointment.CreatedBy
                 };
@@ -138,6 +141,8 @@ namespace MedProSmile.Repository
                     appointmentUpdate.AppointmentTime,
                     appointmentUpdate.Reason,
                     appointmentUpdate.AppointmentStatus,
+                    appointmentUpdate.ConsultationTypeId,
+                    appointmentUpdate.ConsultationFee,
                     appointmentUpdate.Status,
                     appointmentUpdate.UpdatedBy
 
@@ -164,6 +169,38 @@ namespace MedProSmile.Repository
             catch (Exception ex)
             {
                 await _exceptionLogger.LogExceptionAsync(ex, nameof(DeleteAsync) + " " + _controllerName);
+                throw;
+            }
+        }
+
+        public async Task<decimal?> GetConsultationFeeByDoctorAndConsultationTypeAsync(int doctorId, int consultationTypeId, int hospitalId)
+        {
+            try
+            {
+                var query = "usp_GetConsultationFeeByDoctorandConsultation";
+                var parameters = new { DoctorID = doctorId, ConsultationTypeID = consultationTypeId, HospitalId = hospitalId };
+                using var connection = _context.CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<decimal?>(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                await _exceptionLogger.LogExceptionAsync(ex, nameof(GetConsultationFeeByDoctorAndConsultationTypeAsync) + " " + _controllerName);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<dynamic>> GetDoctorRevenueAsync(int? doctorId)
+        {
+            try
+            {
+                var query = "usp_GetDoctorRevenue";
+                var parameters = new { DoctorId = doctorId };
+                using var connection = _context.CreateConnection();
+                return await connection.QueryAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                await _exceptionLogger.LogExceptionAsync(ex, nameof(GetDoctorRevenueAsync) + " " + _controllerName);
                 throw;
             }
         }

@@ -12,11 +12,11 @@ namespace MedProSmile.Services
             _repository = repository;
         }
 
-        public Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
-            => _repository.GetAllPagedAsync(pageNumber, pageSize);
+        public Task<PagedResult<dynamic>> GetAllPagedAsync(int hospitalId, int pageNumber, int pageSize)
+            => _repository.GetAllPagedAsync(hospitalId, pageNumber, pageSize);
 
-        public Task<dynamic> GetByIdAsync(int id)
-            => _repository.GetByIdAsync(id);
+        public Task<dynamic> GetByIdAsync(int id, int hospitalId)
+            => _repository.GetByIdAsync(id, hospitalId);
 
         public Task<int> CreateAsync(Appointment appointment)
             => _repository.CreateAsync(appointment);
@@ -28,6 +28,12 @@ namespace MedProSmile.Services
             => _repository.DeleteAsync(appointmentDelete);
         public Task<PagedResult<dynamic>> GetAllAppointmentByDoctorId(int doctorId, int pageNumber, int pageSize)
         => _repository.GetAllAppointmentByDoctorId(doctorId,pageNumber, pageSize);
+
+        public Task<decimal?> GetConsultationFeeByDoctorAndConsultationTypeAsync(int doctorId, int consultationTypeId, int hospitalId)
+        => _repository.GetConsultationFeeByDoctorAndConsultationTypeAsync(doctorId, consultationTypeId, hospitalId);
+
+        public Task<IEnumerable<dynamic>> GetDoctorRevenueAsync(int? doctorId)
+        => _repository.GetDoctorRevenueAsync(doctorId);
 
     }
 }

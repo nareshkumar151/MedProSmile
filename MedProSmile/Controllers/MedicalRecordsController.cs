@@ -24,9 +24,18 @@ namespace MedProSmile.Controllers
             return int.TryParse(claim, out var doctorId) ? doctorId : null;
         }
 
+        private int? GetCallerHospitalId()
+        {
+            var claim = User.FindFirst("HospitalId")?.Value;
+            return int.TryParse(claim, out var hospitalId) ? hospitalId : null;
+        }
+
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllPaged([FromQuery] int? doctorId,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
             if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
             {
                 var callerDoctorId = GetCallerDoctorId();
@@ -34,14 +43,17 @@ namespace MedProSmile.Controllers
                 doctorId = callerDoctorId.Value;
             }
 
-            var result = await _service.GetAllPagedAsync(doctorId,pageNumber, pageSize);
+            var result = await _service.GetAllPagedAsync(doctorId, hospitalId.Value, pageNumber, pageSize);
             return Ok(result);
         }
 
         [HttpGet("getById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var emp = await _service.GetByIdAsync(id);
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var emp = await _service.GetByIdAsync(id, hospitalId.Value);
             return emp == null ? NotFound() : Ok(emp);
         }
 
@@ -67,7 +79,10 @@ namespace MedProSmile.Controllers
             if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
             {
                 var callerDoctorId = GetCallerDoctorId();
-                dynamic existing = await _service.GetByIdAsync(id);
+                var callerHospitalId = GetCallerHospitalId();
+                if (callerHospitalId == null) return Forbid();
+
+                dynamic existing = await _service.GetByIdAsync(id, callerHospitalId.Value);
                 if (existing == null) return NotFound();
                 if (callerDoctorId == null || (int)existing.DoctorId != callerDoctorId.Value)
                     return Forbid();
@@ -83,7 +98,10 @@ namespace MedProSmile.Controllers
             if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
             {
                 var callerDoctorId = GetCallerDoctorId();
-                dynamic existing = await _service.GetByIdAsync(medicalRecordDelete.RecordId);
+                var callerHospitalId = GetCallerHospitalId();
+                if (callerHospitalId == null) return Forbid();
+
+                dynamic existing = await _service.GetByIdAsync(medicalRecordDelete.RecordId, callerHospitalId.Value);
                 if (existing == null) return NotFound();
                 if (callerDoctorId == null || (int)existing.DoctorId != callerDoctorId.Value)
                     return Forbid();

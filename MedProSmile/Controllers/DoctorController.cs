@@ -7,7 +7,6 @@ namespace MedProSmile.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize (Roles ="Admin")]
     public class DoctorController : ControllerBase
     {
         private readonly IDoctorService _service;
@@ -17,17 +16,29 @@ namespace MedProSmile.Controllers
             _service = service;
         }
 
+        private int? GetCallerHospitalId()
+        {
+            var claim = User.FindFirst("HospitalId")?.Value;
+            return int.TryParse(claim, out var hospitalId) ? hospitalId : null;
+        }
+
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _service.GetAllPagedAsync(pageNumber, pageSize);
-            return Ok(result); 
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var result = await _service.GetAllPagedAsync(hospitalId.Value, pageNumber, pageSize);
+            return Ok(result);
         }
 
         [HttpGet("getById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var emp = await _service.GetByIdAsync(id);
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var emp = await _service.GetByIdAsync(id, hospitalId.Value);
             return emp == null ? NotFound() : Ok(emp);
         }
 

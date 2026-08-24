@@ -28,11 +28,20 @@ namespace MedProSmile.Controllers
             return int.TryParse(claim, out var doctorId) ? doctorId : null;
         }
 
+        private int? GetCallerHospitalId()
+        {
+            var claim = User.FindFirst("HospitalId")?.Value;
+            return int.TryParse(claim, out var hospitalId) ? hospitalId : null;
+        }
+
         [Authorize(Roles = "Admin,Receptionist")]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _service.GetAllPagedAsync(pageNumber, pageSize);
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var result = await _service.GetAllPagedAsync(hospitalId.Value, pageNumber, pageSize);
             return Ok(result);
         }
 
@@ -40,7 +49,10 @@ namespace MedProSmile.Controllers
         [HttpGet("getById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var emp = await _service.GetByIdAsync(id);
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var emp = await _service.GetByIdAsync(id, hospitalId.Value);
             return emp == null ? NotFound() : Ok(emp);
         }
 
@@ -67,7 +79,10 @@ namespace MedProSmile.Controllers
             if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
             {
                 var callerDoctorId = GetCallerDoctorId();
-                dynamic existing = await _service.GetByIdAsync(id);
+                var callerHospitalId = GetCallerHospitalId();
+                if (callerHospitalId == null) return Forbid();
+
+                dynamic existing = await _service.GetByIdAsync(id, callerHospitalId.Value);
                 if (existing == null) return NotFound();
                 if (callerDoctorId == null || (int)existing.DoctorId != callerDoctorId.Value)
                     return Forbid();
@@ -97,6 +112,32 @@ namespace MedProSmile.Controllers
             }
 
             var result = await _service.GetAllAppointmentByDoctorId(doctorId,pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("getConsultationFee")]
+        public async Task<IActionResult> GetConsultationFeeByDoctorAndConsultationType([FromQuery] int doctorId, [FromQuery] int consultationTypeId)
+        {
+            var hospitalId = GetCallerHospitalId();
+            if (hospitalId == null) return Forbid();
+
+            var feeAmount = await _service.GetConsultationFeeByDoctorAndConsultationTypeAsync(doctorId, consultationTypeId, hospitalId.Value);
+            if (feeAmount == null) return NotFound();
+            return Ok(new { FeeAmount = feeAmount });
+        }
+
+        [Authorize(Roles = "Doctor,Admin")]
+        [HttpGet("getDoctorRevenue")]
+        public async Task<IActionResult> GetDoctorRevenue([FromQuery] int? doctorId)
+        {
+            if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
+            {
+                var callerDoctorId = GetCallerDoctorId();
+                if (callerDoctorId == null) return Forbid();
+                doctorId = callerDoctorId.Value;
+            }
+
+            var result = await _service.GetDoctorRevenueAsync(doctorId);
             return Ok(result);
         }
     }

@@ -24,6 +24,7 @@ namespace MedProSmile.Repository
                 var query = "usp_AddDoctorConsultantFee";
                 var parameters = new
                 {
+                    model.HospitalId,
                     model.DoctorId,
                     model.ConsultationTypeId,
                     model.FeeAmount,
@@ -47,6 +48,7 @@ namespace MedProSmile.Repository
                 var parameters = new
                 {
                     model.ConsultantFeeId,
+                    model.HospitalId,
                     model.DoctorId,
                     model.ConsultationTypeId,
                     model.FeeAmount,

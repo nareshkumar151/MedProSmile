@@ -12,11 +12,11 @@ namespace MedProSmile.Services
             _repository = repository;
         }
 
-        public Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
-            => _repository.GetAllPagedAsync(pageNumber, pageSize);
+        public Task<PagedResult<dynamic>> GetAllPagedAsync(int hospitalId, int pageNumber, int pageSize)
+            => _repository.GetAllPagedAsync(hospitalId, pageNumber, pageSize);
 
-        public Task<dynamic> GetByIdAsync(int id)
-            => _repository.GetByIdAsync(id);
+        public Task<dynamic> GetByIdAsync(int id, int hospitalId)
+            => _repository.GetByIdAsync(id, hospitalId);
 
         public Task<int> CreateAsync(Doctor doc)
             => _repository.CreateAsync(doc);

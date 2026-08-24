@@ -22,12 +22,13 @@ namespace MedProSmile.Repository
 
         }
 
-        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<dynamic>> GetAllPagedAsync(int hospitalId, int pageNumber, int pageSize)
         {
             try
             {
                 var query = "usp_GetAllDoctors";
                 var parameters = new DynamicParameters();
+                parameters.Add("HospitalId", hospitalId);
                 parameters.Add("PageNumber", pageNumber);
                 parameters.Add("PageSize", pageSize);
 
@@ -51,12 +52,12 @@ namespace MedProSmile.Repository
             }
         }
 
-        public async Task<dynamic> GetByIdAsync(int id)
+        public async Task<dynamic> GetByIdAsync(int id, int hospitalId)
         {
             try
             {
                 var query = "usp_GetDoctorById";
-                var parameters = new { DoctorId = id };
+                var parameters = new { DoctorId = id, HospitalId = hospitalId };
                 using var connection = _context.CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<dynamic>(query, parameters, commandType: CommandType.StoredProcedure);
             }

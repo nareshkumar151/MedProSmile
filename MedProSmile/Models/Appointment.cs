@@ -10,6 +10,9 @@
         public TimeSpan AppointmentTime { get; set; }
         public string? Reason { get; set; }
         public string AppointmentStatus { get; set; }
+        public int ConsultationTypeId { get; set; }
+        public decimal ConsultationFee { get; set; }
+
         public bool Status { get; set; }
         public int CreatedBy { get; set; }
     }
@@ -23,6 +26,9 @@
         public TimeSpan AppointmentTime { get; set; }
         public string? Reason { get; set; }
         public string AppointmentStatus { get; set; }
+        public int ConsultationTypeId { get; set; }
+        public decimal ConsultationFee { get; set; }
+
         public bool Status { get; set; }
         public int UpdatedBy { get; set; }
     }
